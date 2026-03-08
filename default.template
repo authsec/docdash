@@ -1,0 +1,14 @@
+server {
+       listen ##SERVER_PORT##;
+       listen [::]:##SERVER_PORT##;
+
+       server_name localhost;
+
+       disable_symlinks off;
+       root ##SERVER_BUILD_DIR##;
+       index index.html;
+
+       location / {
+               try_files $uri $uri/ =404;
+       }
+}
