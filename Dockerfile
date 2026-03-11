@@ -1,7 +1,7 @@
 # ==========================================
 # STAGE 1: Builder (Compiling & Downloading)
 # ==========================================
-FROM ubuntu:26.04 AS builder
+FROM ubuntu:24.04 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -37,8 +37,8 @@ RUN curl -fsSL https://d2lang.com/install.sh | sh -s --
 # ==========================================
 # STAGE 2: Final Runtime Environment
 # ==========================================
-FROM ubuntu:26.04
-LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-03-08"
+FROM ubuntu:24.04
+LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-03-11"
 
 # Setup Environment Variables
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -85,7 +85,7 @@ RUN ARCH=$(dpkg --print-architecture) && \
     apt-get clean && rm -f /tmp/drawio.deb && rm -rf /var/lib/apt/lists/*
 
 # 3. Create Draw.io headless wrapper
-RUN printf '#!/bin/sh\nexec xvfb-run -a -s "-screen 0 1920x1080x24" drawio --disable-gpu --no-sandbox "$@"\n' \
+RUN printf '#!/bin/sh\nexec xvfb-run -a -s "-screen 0 1920x1080x24" drawio --disable-dev-shm-usage --disable-gpu --no-sandbox "$@"\n' \
     > /usr/local/bin/drawio-headless && chmod +x /usr/local/bin/drawio-headless
 
 # 4. Copy compiled assets from Builder Stage
